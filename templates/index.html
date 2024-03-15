@@ -1,0 +1,462 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Video Feed</title>
+    <style>
+        @keyframes movingBackground {
+            0% {
+                background-position: 0 0;
+            }
+            
+            100% {
+                background-position: 100px 100px;
+            }
+        }
+        
+        body {
+            font-family: linear-gradient(45deg, #111, #1a1a2e);
+            background-color: #111;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            perspective: 1200px;
+        }
+        
+        .logo-container {
+            margin-right: 20px;
+            display: flex;
+            align-items: center;
+            transform: translateZ(30px);
+            /* Same depth as the navigation items for 3D effect */
+        }
+        
+        .futuristic-nav {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            height: 70px;
+            transform-style: preserve-3d;
+            transform: rotateX(10deg);
+            box-shadow: 0 10px 20px rgba(255, 255, 255, 0.1);
+        }
+        
+        .nav-item {
+            margin: 0 15px;
+            position: relative;
+            overflow: hidden;
+            transform-style: preserve-3d;
+        }
+        
+        .nav-item a {
+            text-decoration: none;
+            color: #fff;
+            padding: 10px 20px;
+            background: linear-gradient(145deg, #222, #333);
+            background-size: 200% 200%;
+            animation: movingBackground 10s infinite;
+            border: 1px solid #00FFA3;
+            box-shadow: 0 0 20px #00FFA3, 0 0 30px #00FFA3, 0 0 40px #00FFA3;
+            transform: translateZ(30px);
+            transition: all 0.4s, transform 0.5s;
+            font-size: 16px;
+            border-radius: 8px;
+        }
+        
+        .nav-item a:hover {
+            box-shadow: 0 0 30px #FF00A3, 0 0 40px #FF00A3, 0 0 50px #FF00A3, 0 0 60px #FF00A3;
+            transform: rotateY(180deg) skew(10deg) translateZ(30px);
+            background-color: #444;
+            animation: none;
+            /* Stops the moving background animation */
+        }
+        
+        .nav-item::before,
+        .nav-item::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(transparent, #00FFA3, transparent);
+            animation: scanLines 2s infinite alternate;
+        }
+        
+        .nav-item::before {
+            left: 0;
+            animation-delay: 1s;
+        }
+        
+        .nav-item::after {
+            right: 0;
+        }
+        
+        @keyframes scanLines {
+            0% {
+                top: -100%;
+            }
+            
+            100% {
+                top: 100%;
+            }
+        }
+        
+        
+        /* video */
+        
+        .container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+        }
+        
+        .video {
+            position: relative;
+            width: 760px;
+            height: 450px;
+            overflow: hidden;
+            border-radius: 20px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 5px solid transparent;
+            background-clip: padding-box, border-box;
+            /* Make the background clip to the content box and border box */
+            background-image: linear-gradient(white, white), linear-gradient(145deg, rgba(0, 255, 163, 0.4), rgba(255, 0, 163, 0.4));
+        }
+        
+        .video img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: filter 0.3s;
+            filter: brightness(0.8);
+        }
+        
+        .video::before {
+            content: "";
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            right: 5px;
+            bottom: 5px;
+            border: 3px solid #00FFA3;
+            border-radius: 15px;
+            z-index: -1;
+            transition: opacity 0.3s, box-shadow 0.3s;
+            opacity: 0.8;
+        }
+        
+        .video:hover::before {
+            box-shadow: 0 0 2px #FF00A3, 0 0 2px #FF00A3, 0 0 2px #FF00A3;
+            opacity: 1;
+        }
+        
+        /* Futuristic Iframe Styling */
+        iframe {
+            display: block;
+            width: 400px;
+            height: 450px;
+            position: relative;
+            /* top:22%; */
+            right: 2%;
+            border-radius: 20px;
+            border: none;
+            transition: transform 0.3s, box-shadow 0.3s;
+            overflow: hidden;
+            aspect-ratio: 4/3;
+            /* Adjust this value based on your preferred aspect ratio */
+            max-width: 100%;
+            margin-left: 50px;
+        }
+        
+        iframe:hover {
+            transform: scale(1.05);
+        }
+        
+        iframe::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            /* This will make sure user interactions with the iframe are not blocked */
+        }
+        
+        
+        /* Map Container */
+        .gmap_canvas {
+            width: 35%;
+            height: 7%;
+            left: 2%;
+            padding-bottom: 56.25%;
+            /* This will give a 16:9 aspect ratio, adjust if needed */
+            position: relative;
+            /* Makes sure our iframe positions inside this container */
+        }
+        
+        /* IFrame Styling */
+        .gmap_iframe {
+            position: absolute;
+            top: 2%;
+            left: 1%;
+            width: 70%;
+            height: 60%;
+            border: none;
+            border-radius: 20px;
+            /* Slight rounded corners */
+            transition: box-shadow 0.3s;
+            
+        }
+        
+        .logo-text-container {
+            display: flex;
+            position: absolute;
+            /* Position the container absolutely */
+            top: 48%;
+            /* Place it 50% from the top */
+            left: 30%;
+            /* Place it 50% from the left */
+            flex-direction: row;
+            /* Stack elements vertically */
+            align-items: center;
+            justify-content: center;
+            background-color: #141414;
+            /* Dark background color */
+            padding: 20px;
+            width: 600px;
+            /* Adjust the width as needed */
+            height: 100px;
+            text-align: center;
+            border: 2px solid #00b3b3;
+            /* Turquoise border */
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 179, 179, 0.8);
+            /* Turquoise box shadow with higher opacity */
+        }
+        
+        /* Logo Styles */
+        .logo {
+            max-width: 20%;
+            height: auto;
+        }
+        
+        /* Text Styles */
+        .text {
+            margin-top: 10px;
+            /* Add spacing between logo and text */
+            color: #00b3b3;
+            /* Turquoise text color */
+            font-family: 'Helvetica', sans-serif;
+            /* Clean and professional font */
+            font-size: 18px;
+            /* Adjust the font size as needed */
+        }
+        
+        /* Hover effect for logos */
+        .logo:hover {
+            transform: scale(1.05);
+            /* Slightly enlarge logo on hover */
+        }
+        
+        .logo-text-containerx {
+            display: flex;
+            position: absolute;
+            /* Position the container absolutely */
+            top: 63%;
+            /* Place it 50% from the top */
+            left: 30%;
+            /* Place it 50% from the left */
+            flex-direction: row;
+            /* Stack elements vertically */
+            align-items: center;
+            justify-content: center;
+            background-color: #141414;
+            /* Dark background color */
+            padding: 20px;
+            width: 600px;
+            /* Adjust the width as needed */
+            height: 100px;
+            text-align: center;
+            border: 2px solid #00b3b3;
+            /* Turquoise border */
+            border-radius: 10px;
+            
+        }
+        
+        /* Logo Styles */
+        .logox {
+            max-width: 20%;
+            height: auto;
+            
+        }
+        
+        /* Text Styles */
+        .textx {
+            margin-top: 10px;
+            /* Add spacing between logo and text */
+            color: #00b3b3;
+            /* Turquoise text color */
+            font-family: 'Helvetica', sans-serif;
+            /* Clean and professional font */
+            font-size: 18px;
+            /* Adjust the font size as needed */
+        }
+        
+        /* Hover effect for logos */
+        .logox:hover {
+            transform: scale(1.05);
+            /* Slightly enlarge logo on hover */
+        }
+        
+        .info_data {
+            display: flex;
+            flex-wrap: wrap;
+            /* Allow items to wrap to the next row on smaller screens */
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            /* Reduce the gap for smaller screens */
+        }
+        
+        .info_data>*>img {
+            max-width: 100%;
+            /* Make images responsive within their containers */
+            height: auto;
+            border-radius: 20px 20px 0 0;
+            margin-bottom: 10px;
+        }
+        
+        .info_data>* {
+            flex: 1;
+            /* Distribute available space equally among items */
+            max-width: 200px;
+            /* Limit the width of items */
+            text-align: center;
+            border-radius: 20px;
+            border: 5px solid #00b3b3;
+            margin: 10px;
+            /* Adjust margin for smaller screens */
+            padding: 10px;
+            /* Add some padding for better spacing */
+        }
+        
+        /* Media query for smaller screens */
+        @media (max-width: 768px) {
+            .info_data>* {
+                flex-basis: calc(50% - 20px);
+                /* Two items per row */
+            }
+        }
+        
+        /* Media query for even smaller screens */
+        @media (max-width: 480px) {
+            .info_data>* {
+                flex-basis: calc(100% - 20px);
+                /* One item per row */
+            }
+        }
+        
+        @media (max-width: 900px) {
+            .container {
+                flex-basis: calc(100% - 20px);
+            }
+        }
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column; /* Stack elements vertically */
+                align-items: flex-start; /* Align items to the left */
+                padding: 10px; /* Reduce padding for smaller screens */
+            }
+            
+            .video {
+                max-width: 100%; /* Make the video responsive to the full width of the container */
+            }
+            
+            iframe {
+                margin-left: 25px;
+                width: 98%; /* Make the iframe responsive to the full width of the container */
+                height: 300px; /* Limit the height to prevent it from becoming too tall */
+            }
+        }
+    </style>
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-analytics.js";
+        import { getDatabase, ref, set, get, child } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js"
+        
+        const firebaseConfig = {
+            apiKey: "AIzaSyBdil66oFupQiEJCgoV3M6YCvXnDdL2qQE",
+            authDomain: "hybrid-security-1817c.firebaseapp.com",
+            projectId: "hybrid-security-1817c",
+            storageBucket: "hybrid-security-1817c.appspot.com",
+            messagingSenderId: "789008875609",
+            appId: "1:789008875609:web:3e5e4cf2985f0c52617148",
+            measurementId: "G-9LX1M34XE4"
+        };
+        
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        
+        const db = getDatabase(app);
+        
+    </script>
+</head>
+
+<body>
+    
+    <nav class="futuristic-nav">
+        <div class="logo-container">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" height="130px" width="130px">
+        </div>
+        <div class="nav-item"><a href="{{ url_for('index') }}">Home</a></div>
+        <div class="nav-item"><a href="#">Alerts</a></div>
+        <div class="nav-item"><a href="{{ url_for('preparedness') }}">Preparedness</a></div>
+        <div class="nav-item"><a href="{{ url_for('resource') }}">Resources</a></div>
+        <div class="nav-item"><a href="{{ url_for('contect') }}">Contact</a></div>
+    </nav>
+    <div class="container">
+        <div class="video">
+            <img src="{{ video_source }}" width="640" height="480">
+        </div>
+        <iframe src="https://embed.windy.com/embed2.html?lat=18.271&lon=79.014&detailLat=21.997&detailLon=79.001&width=650&height=450&zoom=5&level=surface&overlay=wind&product=ecmwf&menu=&message=&marker=true&calendar=now&pressure=true&type=map&location=coordinates&detail=true&metricWind=default&metricTemp=default&radarRange=-1"
+        frameborder="0"></iframe>
+        
+    </div>
+    
+    <div class="details">
+        <div class="info_data">
+            <div class="cyclone">
+                <img src=".{{ url_for('static', filename='images/cyclone.png') }}" alt="cyclone">
+                <label for="cyclone" id="cyclone"><b>Cyclone</b></label>
+                <p class="distance">Distance - None </p>
+                <p class="percentage">Percentage-0 </p>
+            </div>
+            <div class="fload">
+                <img src="{{ url_for('static', filename='images/fload.png') }}" alt="flood">
+                <label for="fload" id="fload"><b>Fload</b></label>
+                <p class="distance">Distance - None </p>
+                <p class="percentage">Percentage - 0 </p>
+            </div>
+            <div class="eq">
+                <img src="{{ url_for('static', filename='images/eq.png') }}" alt="EQ">
+                <label for="EQ" id="EQ"><b>Earth Quake</b></label>
+                <p class="distance">Distance - None </p>
+                <p class="percentage">Percentage - 0</p>
+            </div>
+            <div class="alert">
+                <img src="{{ url_for('static', filename='images/alert.png')}}" alt="alert">
+                <label for="alert" id="alert"><b>{{ request.headers['X-Text'] }}</b></label>
+            </div>
+        </div>
+    </div>
+    
+    
+</body>
+
+</html>

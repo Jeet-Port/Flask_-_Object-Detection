@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us</title>
+    <style>
+        /* Further general theme enhancements */
+body {
+    background: linear-gradient(135deg, #2c3e50, #101020);
+    font-family: 'Roboto', sans-serif;
+    color: #ffffff;  /* White text */
+}
+.futuristic-nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 20px;
+     height: 70px;
+    transform-style: preserve-3d;
+    transform: rotateX(10deg);
+    box-shadow: 0 10px 20px rgba(255, 255, 255, 0.1);
+}
+
+.nav-item {
+    margin: 0 15px;
+    position: relative;
+    overflow: hidden;
+    transform-style: preserve-3d;
+}
+
+.nav-item a {
+    text-decoration: none;
+    color: #fff;
+    padding: 10px 20px;
+    background: linear-gradient(145deg, #222, #333);
+    background-size: 200% 200%;
+    animation: movingBackground 10s infinite;
+    border: 1px solid #00FFA3;
+    box-shadow: 0 0 20px #00FFA3, 0 0 30px #00FFA3, 0 0 40px #00FFA3;
+    transform: translateZ(30px);
+    transition: all 0.4s, transform 0.5s;
+    font-size: 16px;
+    border-radius: 8px;
+}
+
+.nav-item a:hover {
+    box-shadow: 0 0 30px #FF00A3, 0 0 40px #FF00A3, 0 0 50px #FF00A3, 0 0 60px #FF00A3;
+    transform: rotateY(180deg) skew(10deg) translateZ(30px);
+    background-color: #444;
+    animation: none; /* Stops the moving background animation */
+}
+
+.nav-item::before, .nav-item::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(transparent, #00FFA3, transparent);
+    animation: scanLines 2s infinite alternate;
+}
+
+.nav-item::before {
+    left: 0;
+    animation-delay: 1s;
+}
+
+.nav-item::after {
+    right: 0;
+}
+
+@keyframes scanLines {
+    0% {
+        top: -100%;
+    }
+    100% {
+        top: 100%;
+    }
+}
+
+
+h1, h2 {
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* Enhancements to the contact page */
+.contact-intro {
+    padding: 40px;
+    border-bottom: 3px dashed #FFA500;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.5);
+}
+
+.contact-form {
+    margin-top: 40px;
+    padding: 50px;
+    background: rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.5);
+    border-radius: 20px;
+}
+
+.contact-form label,
+.contact-form input,
+.contact-form textarea {
+    display: block;
+    width: 100%;
+    margin-bottom: 30px;
+    padding: 15px 20px;
+    border: 2px solid #FFA500;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.1);
+    color: #ffffff;  /* White text */
+    transition: all 0.4s;
+    font-size: 1.2rem;
+}
+
+.contact-form label {
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+    border-color: #FF8C00;
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 0 10px rgba(255, 165, 0, 0.9);
+}
+
+.contact-form input[type="submit"] {
+    cursor: pointer;
+    background-color: transparent;
+    color: #FFA500;
+    border: 3px solid #FFA500;
+    transition: all 0.4s;
+    text-transform: uppercase;
+    font-weight: bold;
+    letter-spacing: 3px;
+}
+
+.contact-form input[type="submit"]:hover {
+    background-color: #FFA500;
+    color: #101020;
+}
+
+.additional-contact-info {
+    margin-top: 40px;
+    padding: 50px;
+    border-top: 3px dashed #FFA500;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.5);
+    border-radius: 20px;
+}
+
+.additional-contact-info p {
+    margin-bottom: 30px;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+
+    </style>
+    <!-- Linking to the provided stylesheet -->
+</head>
+
+<body>
+    <header>
+         <nav class="futuristic-nav">
+      <div class="logo-container">
+              <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" height="130px" width="130px">
+        </div>
+        <div class="nav-item"><a href="{{ url_for('index') }}">Home</a></div>
+        <div class="nav-item"><a href="#">Alerts</a></div>
+        <div class="nav-item"><a href="{{ url_for('preparedness') }}">Preparedness</a></div>
+        <div class="nav-item"><a href="{{ url_for('resource') }}">Resources</a></div>
+        <div class="nav-item"><a href="{{ url_for('contect') }}">Contact</a></div>
+    </nav>
+    </header>
+
+    <main>
+        <section class="contact-intro">
+            <h1>Contact Us</h1>
+            <p>Have questions or need assistance? Reach out to us!</p>
+        </section>
+
+        <section class="contact-form">
+            <form action="/submit_contact" method="post"> <!-- Assuming there's a server-side handler at "/submit_contact" -->
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="message">Message:</label>
+                <textarea id="message" name="message" rows="5" required></textarea>
+
+                <input type="submit" value="Submit">
+            </form>
+        </section>
+
+        <section class="additional-contact-info">
+            <h2>Other ways to reach us:</h2>
+            <p>Email: support@example.com</p>
+            <p>Phone: +123-456-7890</p>
+            <!-- Add other contact details as needed -->
+        </section>
+    </main>
+
+    <footer>
+        <!-- Footer Information -->
+    </footer>
+</body>
+
+</html>

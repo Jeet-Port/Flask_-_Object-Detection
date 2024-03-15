@@ -1,0 +1,8 @@
+import os
+
+def sound():
+    os.system("echo -e \a")
+
+i=0
+while(i == 0):
+    sound()
